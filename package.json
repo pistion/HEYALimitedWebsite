@@ -1,0 +1,22 @@
+{
+  "name": "coretalent-png-website",
+  "version": "1.0.0",
+  "description": "CoreTalent PNG by HEYA Limited recruitment and workforce solutions website.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20 <25"
+  },
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "view-db": "node view-db.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "ejs": "^5.0.1",
+    "express": "^5.1.0"
+  }
+}

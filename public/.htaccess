@@ -1,0 +1,195 @@
+# ================================
+# Base: safety rails for HostGator
+# ================================
+# Avoid 500s if a module isn't available
+# (HostGator shared hosting is Apache 2.4+)
+ServerSignature Off
+Options -Indexes
+
+# Make sure rewrites are enabled
+<IfModule mod_rewrite.c>
+
+  # -------------------------------------------
+  # Clean URLs: Remove .html from URLs
+  # -------------------------------------------
+  # Internally rewrite requests without .html to the actual file
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.html -f
+  RewriteRule ^([^/]+)$ $1.html [L]
+
+  # Redirect .html URLs to clean versions (optional but SEO-friendly)
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.html [NC]
+  RewriteRule ^ %1 [R=301,L]
+  RewriteEngine On
+
+  # ----------------------------------------------------
+  # Maintenance mode (toggle by creating /maintenance.enable)
+  # ----------------------------------------------------
+  # If /maintenance.enable exists, show /maintenance.html to visitors
+  # (whitelist your own IP so you can preview the site).
+  # Replace 203.0.113.10 with your IP (remove the line to disable whitelist).
+  RewriteCond %{REQUEST_URI} !^/maintenance\.html$ [NC]
+  RewriteCond %{REQUEST_URI} !^/errors/ [NC]
+  RewriteCond %{REQUEST_URI} !\.(css|js|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|eot)$ [NC]
+  RewriteCond %{DOCUMENT_ROOT}/maintenance.enable -f
+  RewriteCond %{REMOTE_ADDR} !^203\.0\.113\.10$
+  RewriteRule ^.*$ /maintenance.html [R=302,L]
+
+  # ---------------------------------------
+  # Canonical: force HTTPS and force "www"
+  # ---------------------------------------
+  # If you're using AutoSSL/Let’s Encrypt on HostGator, this is fine.
+  # Redirect any non-HTTPS to HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # Force "www" (comment this block and use the non-www variant below if desired)
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # ---- Alternative: force NON-www (use instead of the block above) ----
+  # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  # RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+  # ---------------------------------------------------------------------
+
+  # -------------------------------------------------
+  # Security: block access to sensitive dot-files etc.
+  # -------------------------------------------------
+  # Protect .env, .git, .ht*, composer.*, package.*, etc.
+  RewriteRule (^|/)\.(env|git|svn|hg|bzr|DS_Store) - [F,L,NC]
+  RewriteRule (^|/)(composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|webpack\..*|gulpfile\..*) - [F,L,NC]
+  # Disallow direct access to backup/source files
+  RewriteRule \.(bak|backup|swp|old|orig|sql|sqlite?|tpl|inc|dist)$ - [F,L,NC]
+
+  # -------------------------------------------
+  # Security: basic bad-bot / exploit filtering
+  # -------------------------------------------
+  # Keep conservative to avoid false positives.
+  RewriteCond %{REQUEST_METHOD} ^(TRACE|DELETE|TRACK|DEBUG)$ [NC,OR]
+  RewriteCond %{THE_REQUEST} "\.\./" [OR]
+  RewriteCond %{QUERY_STRING} "(?:\.\./|<|>|concat\(|union(?:\s+all)?\s+select|base64_|/etc/passwd)" [NC,OR]
+  RewriteCond %{HTTP_USER_AGENT} "(?:sqlmap|nikto|fimap|nmap|nessus|acunetix|wpscan|curl/7\.[0-9]{1,2}\.[0-9]{1,2})" [NC]
+  RewriteRule .* - [F,L]
+
+  # ---------------------------------
+  # Tidy up trailing slashes (optional)
+  # ---------------------------------
+  # Example keeps URLs canonical without changing file/dir requests
+  # RewriteCond %{REQUEST_FILENAME} !-d
+  # RewriteCond %{REQUEST_URI} .+/$
+  # RewriteRule ^(.+?)/$ /$1 [R=301,L]
+</IfModule>
+
+# =====================================================
+# Security Headers (safe defaults for typical websites)
+# =====================================================
+<IfModule mod_headers.c>
+  # Prevent MIME sniffing
+  Header always set X-Content-Type-Options "nosniff"
+  # Clickjacking protection (adjust if you use cross-origin iframes intentionally)
+  Header always set X-Frame-Options "SAMEORIGIN"
+  # Basic XSS protection hinting (legacy; kept for some old UAs)
+  Header always set X-XSS-Protection "1; mode=block"
+  # Referrer privacy with useful analytics
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  # Limit powerful APIs (adjust as needed)
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
+  # HSTS (enable once you're sure HTTPS works everywhere, including subdomains)
+  # 6 months = 15552000; add "; preload" only after submitting to hstspreload.org
+  Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"
+  # --- Content-Security-Policy (OFF by default to avoid breaking your site) ---
+  # Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data: blob:; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+</IfModule>
+
+# ==========================================
+# Allow only common HTTP methods site-wide
+# ==========================================
+<LimitExcept GET POST HEAD OPTIONS>
+  Require all denied
+</LimitExcept>
+
+# =======================================
+# Performance: Gzip/Brotli compression
+# =======================================
+# HostGator often has mod_deflate; Brotli may not be available on all tiers.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript application/json image/svg+xml
+</IfModule>
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/plain text/html text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript application/json image/svg+xml
+</IfModule>
+
+# =======================================
+# Performance: caching & ETags
+# =======================================
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Static assets (cache aggressively)
+  ExpiresByType image/avif "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType font/ttf "access plus 1 year"
+  ExpiresByType font/otf "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+
+  # CSS & JS
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/x-javascript "access plus 1 month"
+
+  # JSON / SVG / Web Manifest
+  ExpiresByType application/json "access plus 7 days"
+  ExpiresByType application/manifest+json "access plus 7 days"
+
+  # HTML (short cache)
+  ExpiresByType text/html "access plus 5 minutes"
+</IfModule>
+
+# Strong caching headers for immutable assets if you version filenames (e.g., app.abc123.js)
+<IfModule mod_headers.c>
+  <FilesMatch "\.(?:js|css|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|eot)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(?:json|xml)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+  <FilesMatch "\.(?:html|htm)$">
+    Header set Cache-Control "public, max-age=300"
+  </FilesMatch>
+</IfModule>
+
+# Turn off ETags to avoid cache revalidation mismatches across clusters
+FileETag None
+
+# =======================================
+# Custom Error Pages
+# =======================================
+# Place your error files at /errors/*.html
+ErrorDocument 400 /errors/400.html
+ErrorDocument 401 /errors/401.html
+ErrorDocument 403 /errors/403.html
+ErrorDocument 404 /errors/404.html
+ErrorDocument 500 /errors/500.html
+ErrorDocument 502 /errors/502.html
+ErrorDocument 503 /errors/503.html
+ErrorDocument 504 /errors/504.html
+
+# =======================================
+# PHP tweaks (optional; uncomment if needed)
+# =======================================
+# <IfModule mod_php7.c>
+#   php_value session.cookie_httponly 1
+#   php_value session.use_strict_mode 1
+#   php_value expose_php Off
+# </IfModule>
+
+# ================================
+# End of configuration
+# ================================

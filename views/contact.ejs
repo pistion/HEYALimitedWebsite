@@ -1,0 +1,110 @@
+<%- include("partials/header", {
+  active: "contact",
+  bodyId: "page-contact",
+  pageTitle: "Contact | CoreTalent PNG",
+  pageDescription: "Contact HEYA Limited about job advertising, recruitment support, workforce mobilization, and employer partnerships."
+}) %>
+
+<main id="content">
+  <!-- Do not publish NID number, private personal ID details, or tax numbers unless client explicitly confirms. -->
+  <section class="page-hero section--dark">
+    <canvas id="contactWireframeCanvas" class="wireframe-canvas" aria-hidden="true" hidden></canvas>
+    <div class="container page-hero__inner">
+      <p class="eyebrow eyebrow--gold">Contact</p>
+      <h1>Contact CoreTalent PNG</h1>
+      <p>Reach out to advertise a vacancy, request recruitment support, or discuss workforce solutions for your organization.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container contact-layout">
+      <aside class="contact-panel">
+        <p class="eyebrow">Contact Details</p>
+        <h2>Hekeria Yako</h2>
+        <ul class="contact-list">
+          <li><span>Email</span><a href="mailto:hyako212@gmail.com">hyako212@gmail.com</a></li>
+          <li><span>Phone</span><a href="tel:+67571555038">71555038</a></li>
+          <li><span>Location</span>Port Moresby, Papua New Guinea</li>
+          <li><span>Postal Address</span>PO Box 2114, Vision City 1311, Waigani, NCD</li>
+        </ul>
+        <p class="small-note">If your company is hiring or preparing for a workforce requirement, contact CoreTalent PNG to discuss the best advertising, sourcing, or recruitment support option.</p>
+      </aside>
+
+      <section class="form-panel" aria-labelledby="contact-form-title">
+        <p class="eyebrow">Employer Enquiry</p>
+        <h2 id="contact-form-title">Send an enquiry</h2>
+        <form id="contact-form" class="form" method="post" action="/api/contact" novalidate>
+          <div class="form-grid">
+            <label>
+              <span>Full Name</span>
+              <input type="text" name="fullName" autocomplete="name" required />
+            </label>
+            <label>
+              <span>Company Name</span>
+              <input type="text" name="companyName" autocomplete="organization" />
+            </label>
+            <label>
+              <span>Email Address</span>
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+            <label>
+              <span>Phone Number</span>
+              <input type="tel" name="phone" autocomplete="tel" required />
+            </label>
+          </div>
+          <label>
+            <span>Service Needed</span>
+            <select name="serviceNeeded" required>
+              <option value="">Select a service</option>
+              <option>Advertise a Job</option>
+              <option>Recruitment Support</option>
+              <option>Candidate Screening</option>
+              <option>Labour Hire</option>
+              <option>Workforce Mobilization</option>
+              <option>General Enquiry</option>
+            </select>
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea name="message" rows="6" required></textarea>
+          </label>
+          <button class="btn btn--gold" type="submit">Send Enquiry</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container split split--center">
+      <div>
+        <p class="eyebrow">Social Links</p>
+        <h2>Follow CoreTalent PNG</h2>
+      </div>
+      <div class="social-grid">
+        <!-- TODO: Replace with official CoreTalent PNG Facebook page URL. -->
+        <a class="social-card" href="#" aria-label="CoreTalent PNG Facebook page placeholder">
+          <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+          <span>Facebook</span>
+        </a>
+        <!-- TODO: Replace with official CoreTalent PNG LinkedIn page URL. -->
+        <a class="social-card" href="#" aria-label="CoreTalent PNG LinkedIn page placeholder">
+          <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+          <span>LinkedIn</span>
+        </a>
+        <a class="social-card" href="mailto:hyako212@gmail.com" aria-label="Email CoreTalent PNG">
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          <span>Email</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta-band">
+    <div class="container cta-band__inner">
+      <p>CoreTalent PNG is operated by HEYA Limited and powered by HY Strategic Talent Acquisition Partner, supporting employers with job advertising, recruitment, and workforce solutions across Papua New Guinea.</p>
+    </div>
+  </section>
+</main>
+
+<%- include("partials/footer") %>

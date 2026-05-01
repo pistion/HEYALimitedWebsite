@@ -1,0 +1,67 @@
+<%
+  const current = typeof active !== "undefined" ? active : "";
+  const titleText = typeof pageTitle !== "undefined" ? pageTitle : "CoreTalent PNG by HEYA Limited";
+  const descriptionText = typeof pageDescription !== "undefined"
+    ? pageDescription
+    : "CoreTalent PNG by HEYA Limited connects PNG employers with qualified, job-ready talent across mining, oil & gas, construction, engineering, public sector, and security industries.";
+  const bodyIdText = typeof bodyId !== "undefined" ? bodyId : "";
+  const fullTitle = titleText.includes("|") ? titleText : `${titleText} | CoreTalent PNG`;
+  const navItems = [
+    { key: "home", label: "Home", href: "/" },
+    { key: "about", label: "About", href: "/about" },
+    { key: "services", label: "Services", href: "/services" },
+    { key: "packages", label: "Packages", href: "/packages" },
+    { key: "contact", label: "Contact", href: "/contact" }
+  ];
+%>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="<%= descriptionText %>" />
+  <title><%= fullTitle %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;500;600;700;800&family=Source+Sans+3:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/imgs/heya-talentcore-icon.png?v=20260501" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/site.css?v=20260501-submissions" />
+</head>
+<body class="page" id="<%= bodyIdText %>">
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header__inner">
+      <a class="brand" href="/" aria-label="HEYA TalentCore home">
+        <span class="brand__mark" aria-hidden="true">
+          <img src="/imgs/heya-talentcore-icon.png?v=20260501" alt="" width="512" height="512" />
+        </span>
+        <span class="brand__text">
+          <span class="brand__name">HEYA TalentCore</span>
+          <span class="brand__line">Talents and Workforce Solutions</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <% navItems.forEach((item) => { %>
+          <a class="nav__link <%= current === item.key ? 'is-active' : '' %>" href="<%= item.href %>" <%= current === item.key ? 'aria-current="page"' : '' %>><%= item.label %></a>
+        <% }) %>
+      </nav>
+
+      <a class="btn btn--gold header__cta" href="/advertise">Advertise a Vacancy</a>
+
+      <button id="hamburger" class="hamburger" type="button" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation">
+      <% navItems.forEach((item) => { %>
+        <a class="mobile-menu__link <%= current === item.key ? 'is-active' : '' %>" href="<%= item.href %>"><%= item.label %></a>
+      <% }) %>
+      <a class="btn btn--gold mobile-menu__cta" href="/advertise">Advertise a Vacancy</a>
+    </div>
+  </header>

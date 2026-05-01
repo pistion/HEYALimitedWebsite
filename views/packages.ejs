@@ -1,0 +1,100 @@
+<%- include("partials/header", {
+  active: "packages",
+  bodyId: "page-packages",
+  pageTitle: "Packages | CoreTalent PNG",
+  pageDescription: "CoreTalent PNG employer packages for job advertising, visibility, candidate database access, and recruitment support."
+}) %>
+
+<main id="content">
+  <section class="page-hero section--dark">
+    <canvas id="packagesWireframeCanvas" class="wireframe-canvas" aria-hidden="true" hidden></canvas>
+    <div class="container page-hero__inner">
+      <p class="eyebrow eyebrow--gold">Packages</p>
+      <h1>Employer Advertising Packages</h1>
+      <p>Flexible employer packages for vacancy visibility, candidate reach, and recruitment support. Request a quote that matches your hiring volume, urgency, and workforce requirements.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container pricing-grid">
+      <article class="price-card package-quote-card">
+        <span class="package-label">Listing Visibility</span>
+        <h2>Silver Package</h2>
+        <p class="quote-callout">Quote on request</p>
+        <p>Best for employers starting with professional vacancy visibility and structured listing support.</p>
+        <ul class="check-list">
+          <li>Job posting access</li>
+          <li>Basic listing visibility</li>
+          <li>Standard support</li>
+          <li>Optional high-priority advertisement support</li>
+        </ul>
+        <a class="btn btn--outline" href="/advertise?package=silver">Request Silver Quote</a>
+      </article>
+
+      <article class="price-card package-quote-card">
+        <span class="package-label">Priority Reach</span>
+        <h2>Bronze Package</h2>
+        <p class="quote-callout">Quote on request</p>
+        <p>Best for employers needing stronger reach, multiple postings, and better candidate visibility.</p>
+        <ul class="check-list">
+          <li>Multiple job postings</li>
+          <li>Featured listings</li>
+          <li>Limited candidate database access</li>
+          <li>Priority promotion options available</li>
+        </ul>
+        <a class="btn btn--outline" href="/advertise?package=bronze">Request Bronze Quote</a>
+      </article>
+
+      <article class="price-card package-quote-card price-card--featured">
+        <span class="pill">Premium / Recommended</span>
+        <span class="package-label">Strategic Partnership</span>
+        <h2>Gold Package</h2>
+        <p class="quote-callout">Custom quote</p>
+        <p>Best for employers needing maximum visibility, dedicated recruitment support, and a stronger workforce pipeline.</p>
+        <ul class="check-list">
+          <li>Unlimited job postings</li>
+          <li>Priority listing and promotion</li>
+          <li>Full candidate database access</li>
+          <li>Dedicated recruitment support</li>
+          <li>Social media promotion campaigns</li>
+          <li>Employer branding spotlight</li>
+          <li>Custom priority promotion plan</li>
+        </ul>
+        <a class="btn btn--gold" href="/advertise?package=gold">Request Gold Quote</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Quote-Based Support</p>
+        <h2>Build a Package Around Your Hiring Need</h2>
+      </div>
+      <div>
+        <p>High-priority advertisements, featured promotion, candidate access, and recruitment support can be adjusted around the roles you need to fill and the level of visibility required.</p>
+        <div class="rate-table quote-table" role="list" aria-label="Quote-based package options">
+          <div role="listitem"><strong>Vacancy Visibility</strong><span>Promoted listing and audience reach options</span></div>
+          <div role="listitem"><strong>Candidate Access</strong><span>Shortlisting, database access, and screening support</span></div>
+          <div role="listitem"><strong>Recruitment Support</strong><span>Custom support for bulk, project, or priority hiring</span></div>
+        </div>
+        <a class="btn btn--gold quote-table__cta" href="/contact">Ask for a Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface package-notes">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Important note</p>
+        <h2>Need End-to-End Recruitment Support?</h2>
+      </div>
+      <div>
+        <p>For bulk hiring, project recruitment, workforce mobilization, labour hire support, or strategic hiring advisory, employers can request a custom recruitment partnership through HEYA Limited and HY Strategic Talent Acquisition Partner.</p>
+        <a class="btn btn--gold" href="/contact">Request a Custom Quote</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include("partials/footer") %>

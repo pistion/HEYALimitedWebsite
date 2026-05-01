@@ -1,0 +1,126 @@
+<%- include("partials/header", {
+  active: "advertise",
+  bodyId: "page-advertise",
+  pageTitle: "Advertise a Vacancy | CoreTalent PNG",
+  pageDescription: "Submit a vacancy request to CoreTalent PNG for job advertising, candidate sourcing, and recruitment support."
+}) %>
+
+<main id="content">
+  <section class="page-hero section--dark">
+    <canvas id="advertiseWireframeCanvas" class="wireframe-canvas" aria-hidden="true" hidden></canvas>
+    <div class="container page-hero__inner">
+      <p class="eyebrow eyebrow--gold">Employer Request</p>
+      <h1>Advertise a Vacancy</h1>
+      <p>Submit your hiring requirement and CoreTalent PNG will help you promote your vacancy or connect you with recruitment support.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container form-page">
+      <div>
+        <p class="eyebrow">Vacancy Details</p>
+        <h2>Tell us what your company needs</h2>
+        <p>Use this form for job advertising, candidate sourcing, screening, workforce mobilization, labour hire support, or recruitment partnership enquiries. Do not submit candidate resumes here.</p>
+      </div>
+
+      <form id="advertise-form" class="form" method="post" action="/api/advertise" novalidate>
+        <input type="hidden" name="packageInterest" id="packageInterest" />
+        <div class="form-grid">
+          <label>
+            <span>Full Name</span>
+            <input type="text" name="fullName" autocomplete="name" required />
+          </label>
+          <label>
+            <span>Company Name</span>
+            <input type="text" name="companyName" autocomplete="organization" required />
+          </label>
+          <label>
+            <span>Job Title / Position Needed</span>
+            <input type="text" name="jobTitle" required />
+          </label>
+          <label>
+            <span>Industry</span>
+            <select name="industry" required>
+              <option value="">Select an industry</option>
+              <option>Mining</option>
+              <option>Oil & Gas</option>
+              <option>Construction & Engineering</option>
+              <option>Engineering</option>
+              <option>Public Sector</option>
+              <option>Private Security</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>
+            <span>Number of Vacancies</span>
+            <input type="number" name="numberOfVacancies" min="1" step="1" placeholder="Example: 1" />
+          </label>
+          <label>
+            <span>Work Location</span>
+            <input type="text" name="location" required />
+          </label>
+          <label>
+            <span>Employment Type</span>
+            <select name="employmentType" required>
+              <option value="">Select employment type</option>
+              <option>Full-time</option>
+              <option>Contract</option>
+              <option>FIFO</option>
+              <option>Project-based</option>
+              <option>Temporary</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>
+            <span>Phone</span>
+            <input type="tel" name="phone" autocomplete="tel" required />
+          </label>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+        </div>
+        <label>
+          <span>Message / Additional Requirements</span>
+          <textarea name="message" rows="7" placeholder="Tell us about the role, required experience, location, start date, and any workforce requirements."></textarea>
+        </label>
+        <button class="btn btn--gold" type="submit">Submit Vacancy Enquiry</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container section-heading section-heading--center">
+      <p class="eyebrow">What happens next</p>
+      <h2>What Happens Next</h2>
+    </div>
+
+    <div class="container process-grid process-grid--three">
+      <article class="process-card">
+        <span>01</span>
+        <h3>Review</h3>
+        <p>CoreTalent PNG reviews your vacancy and hiring requirements.</p>
+      </article>
+      <article class="process-card">
+        <span>02</span>
+        <h3>Recommend</h3>
+        <p>You receive guidance on the best advertising package or recruitment support option.</p>
+      </article>
+      <article class="process-card">
+        <span>03</span>
+        <h3>Promote</h3>
+        <p>Your vacancy can be prepared for visibility through listing and promotional channels.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section cta-band">
+    <div class="container cta-band__inner">
+      <h2>Not sure which advertising option fits your hiring needs?</h2>
+      <a class="btn btn--gold" href="/packages">View Packages</a>
+    </div>
+  </section>
+</main>
+
+<%- include("partials/footer") %>

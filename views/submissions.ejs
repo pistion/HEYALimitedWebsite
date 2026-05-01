@@ -1,0 +1,120 @@
+<%- include("partials/header", {
+  active: "",
+  bodyId: "page-submissions",
+  pageTitle,
+  pageDescription
+}) %>
+
+<%
+  const contacts = contactEnquiries || [];
+  const vacancies = vacancyEnquiries || [];
+  const formatDate = (value) => value
+    ? new Date(`${value}Z`).toLocaleString("en-PG", { dateStyle: "medium", timeStyle: "short" })
+    : "Not recorded";
+%>
+
+<main id="content">
+  <section class="page-hero section--dark">
+    <div class="container page-hero__inner">
+      <p class="eyebrow eyebrow--gold">Private Dashboard</p>
+      <h1>Website Submissions</h1>
+      <p>Contact enquiries and vacancy requests saved from the live website into the SQLite database.</p>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container submission-summary" aria-label="Submission totals">
+      <article>
+        <span>Total Submissions</span>
+        <strong><%= counts.total %></strong>
+      </article>
+      <article>
+        <span>Contact Enquiries</span>
+        <strong><%= counts.contact %></strong>
+      </article>
+      <article>
+        <span>Vacancy Requests</span>
+        <strong><%= counts.vacancy %></strong>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container submissions-layout">
+      <article class="submission-panel">
+        <div class="submission-panel__heading">
+          <div>
+            <p class="eyebrow">Contact</p>
+            <h2>Contact Enquiries</h2>
+          </div>
+          <span><%= contacts.length %> shown</span>
+        </div>
+
+        <% if (contacts.length) { %>
+          <div class="submission-list">
+            <% contacts.forEach((item) => { %>
+              <section class="submission-item">
+                <header>
+                  <div>
+                    <h3><%= item.full_name %></h3>
+                    <p><%= item.company_name || "No company supplied" %></p>
+                  </div>
+                  <time datetime="<%= item.submitted_at %>"><%= formatDate(item.submitted_at) %></time>
+                </header>
+                <dl>
+                  <div><dt>Email</dt><dd><a href="mailto:<%= item.email %>"><%= item.email %></a></dd></div>
+                  <div><dt>Phone</dt><dd><%= item.phone || "Not supplied" %></dd></div>
+                  <div><dt>Service</dt><dd><%= item.service_needed || "Not supplied" %></dd></div>
+                </dl>
+                <p class="submission-message"><%= item.message %></p>
+              </section>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p class="empty-state">No contact enquiries have been submitted yet.</p>
+        <% } %>
+      </article>
+
+      <article class="submission-panel">
+        <div class="submission-panel__heading">
+          <div>
+            <p class="eyebrow">Vacancies</p>
+            <h2>Vacancy Requests</h2>
+          </div>
+          <span><%= vacancies.length %> shown</span>
+        </div>
+
+        <% if (vacancies.length) { %>
+          <div class="submission-list">
+            <% vacancies.forEach((item) => { %>
+              <section class="submission-item">
+                <header>
+                  <div>
+                    <h3><%= item.job_title %></h3>
+                    <p><%= item.company_name %> · <%= item.full_name %></p>
+                  </div>
+                  <time datetime="<%= item.submitted_at %>"><%= formatDate(item.submitted_at) %></time>
+                </header>
+                <dl>
+                  <div><dt>Email</dt><dd><a href="mailto:<%= item.email %>"><%= item.email %></a></dd></div>
+                  <div><dt>Phone</dt><dd><%= item.phone || "Not supplied" %></dd></div>
+                  <div><dt>Industry</dt><dd><%= item.industry || "Not supplied" %></dd></div>
+                  <div><dt>Location</dt><dd><%= item.location || "Not supplied" %></dd></div>
+                  <div><dt>Vacancies</dt><dd><%= item.number_of_vacancies || "Not supplied" %></dd></div>
+                  <div><dt>Package</dt><dd><%= item.package_interest || "Not supplied" %></dd></div>
+                </dl>
+                <% if (item.message) { %>
+                  <p class="submission-message"><%= item.message %></p>
+                <% } %>
+              </section>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p class="empty-state">No vacancy requests have been submitted yet.</p>
+        <% } %>
+      </article>
+    </div>
+  </section>
+</main>
+
+<%- include("partials/footer") %>
